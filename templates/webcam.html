@@ -21,17 +21,9 @@
             position: relative;
         }
 
-        /* Soft Overlay for Better Visibility */
+        /* Remove blur overlay */
         body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* Dark overlay */
-            backdrop-filter: blur(5px);
-            z-index: 0;
+            display: none;
         }
 
         /* Heading Styling */
@@ -48,8 +40,7 @@
             border: 4px solid rgba(255, 255, 255, 0.6);
             border-radius: 10px;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.7);
             position: relative;
             z-index: 2;
         }

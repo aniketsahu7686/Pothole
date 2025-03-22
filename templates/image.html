@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -41,10 +41,10 @@
             z-index: 2;
         }
 
-        /* Form box with glassmorphic effect */
+        /* Form box with better visibility */
         form {
-            background: rgba(255, 255, 255, 0.6); /* Transparent white */
-            backdrop-filter: blur(10px); /* Soft blur effect */
+            background: rgba(255, 255, 255, 0.9); /* Increased opacity */
+            backdrop-filter: blur(8px);
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             padding: 20px 30px;
@@ -72,12 +72,23 @@
             background-color: #0056b3;
         }
 
-        /* Image styling */
-        img {
-            border: 4px solid #ffffff;
+        /* Image container to ensure clarity */
+        .image-container {
+            background: white; /* Ensures image clarity */
+            padding: 15px;
             border-radius: 10px;
-            margin-top: 10px;
-            width: 80%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Makes the image pop */
+            display: inline-block;
+            margin-top: 20px;
+            width: 90%;
+            max-width: 550px;
+            position: relative;
+            z-index: 3;
+        }
+
+        img {
+            border-radius: 10px;
+            width: 100%;
             max-width: 500px;
         }
 
@@ -99,6 +110,15 @@
             background: rgba(255, 255, 255, 1);
         }
 
+        /* Grid layout for displaying images side by side */
+        .image-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -109,10 +129,17 @@
     </form>
 
     {% if input_image %}
-        <h3>Original Image:</h3>
-        <img id="org_img" src="{{ input_image }}" width="500">
-        <h3>Detection Result:</h3>
-        <img id="detect_img" src="{{ result_image }}" width="500">
+        <div class="image-grid">
+            <div class="image-container">
+                <h3>Original Image:</h3>
+                <img id="org_img" src="{{ input_image }}" alt="Original Image">
+            </div>
+
+            <div class="image-container">
+                <h3>Detection Result:</h3>
+                <img id="detect_img" src="{{ result_image }}" alt="Detection Result">
+            </div>
+        </div>
     {% endif %}
 
     <a href="/">Back to Home</a>
