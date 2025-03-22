@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Road Damage Detection</title>
+    <style>
+        /* Background Settings */
+        body {
+            text-align: center;
+            background: url('/static/livecamera.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Soft Overlay for Better Visibility */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay */
+            backdrop-filter: blur(5px);
+            z-index: 0;
+        }
+
+        /* Heading Styling */
+        h1 {
+            color: #ffffff;
+            z-index: 2;
+        }
+
+        /* Video Container */
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            border: 4px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Video Stream */
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Buttons Styling */
+        button {
+            margin: 10px;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s;
+            z-index: 2;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* "Go Back" Button */
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            z-index: 2;
+        }
+
+        a:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Live Road Damage Detection</h1>
+    <div class="video-container">
+        <img id="video_feed" src="{{ url_for('video_feed') }}" alt="Webcam Stream">
+    </div>
+    <button onclick="startWebcam()">Start Detection</button>
+    <button onclick="stopWebcam()">Stop Detection</button>
+    <br><a href="/">Go Back</a>
+</body>
+
+<script>
+    function startWebcam() {
+        fetch("/start_webcam", { method: "POST" })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                let videoElement = document.getElementById("video_feed");
+                if (videoElement) {
+                    videoElement.src = "/video_feed";
+                }
+            })
+            .catch(error => console.error("Error starting webcam:", error));
+    }
+
+    function stopWebcam() {
+        fetch("/stop_webcam", { method: "POST" })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                let videoElement = document.getElementById("video_feed");
+                if (videoElement) {
+                    videoElement.src = "/static/webcam/cam.jpg"; 
+                }
+            })
+            .catch(error => console.error("Error stopping webcam:", error));
+    }
+</script>  
+</html>

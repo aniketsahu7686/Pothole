@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Detection</title>
+    <style>
+        /* Background settings */
+        body {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: url('/static/image.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+            text-align: center;
+        }
+
+        /* Soft overlay for better readability */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2); /* Light blur effect */
+            backdrop-filter: blur(5px);
+            z-index: 0;
+        }
+
+        /* Text styling */
+        h1, h3 {
+            color: #222; /* Darker text for better contrast */
+            z-index: 2;
+        }
+
+        /* Form box with glassmorphic effect */
+        form {
+            background: rgba(255, 255, 255, 0.6); /* Transparent white */
+            backdrop-filter: blur(10px); /* Soft blur effect */
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Input and button styles */
+        input[type="file"], button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Image styling */
+        img {
+            border: 4px solid #ffffff;
+            border-radius: 10px;
+            margin-top: 10px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        /* Back to Home button */
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #222;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            z-index: 2;
+        }
+
+        a:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Upload an Image for Object Detection</h1>
+    <form action="/image" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">Upload & Detect</button>
+    </form>
+
+    {% if input_image %}
+        <h3>Original Image:</h3>
+        <img id="org_img" src="{{ input_image }}" width="500">
+        <h3>Detection Result:</h3>
+        <img id="detect_img" src="{{ result_image }}" width="500">
+    {% endif %}
+
+    <a href="/">Back to Home</a>
+</body>
+<script>
+    function checkDamageAlert() {
+        let damage = `{{damage_percentage}}`;
+        if (damage != '') {
+            if(damage > 20){
+                alert("Road is severely damaged! Vehicle travel is not allowed on this road!");
+            } else if(damage > 5){
+                alert("Caution: Rough road ahead. Drive carefully!");
+            } else if(damage > 0){
+                alert("Smooth road with minor potholes. Drive safely!");
+            }
+        }
+    }
+    document.addEventListener("DOMContentLoaded", checkDamageAlert);
+</script>
+</html>
